@@ -1,3 +1,4 @@
+---
 - name: Listen for events
   hosts: all
   sources:
