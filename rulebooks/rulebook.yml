@@ -1,18 +1,18 @@
 ---
-- name: Rulebook to print debug message based on webhook event
-  hosts: testHost
-  gather_facts: false
-
+- name: Listen for events
+  hosts: all
   sources:
-      - ansible.eda.webhook:
-          host: localhost
-          port: 6000
-
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 6000
   rules:
-      - name: Launch playbook on commit
-        condition: event.payload.action == 'created'
-        action:
-           run_job_template:
-               name: MyProject_IIS
-               extra_vars:
-                   eventSource: "{{ eventSource }}"  
+    - name: Rule - Print event information
+    condition: event.meta.headers is defined
+    action:
+      run_job_template:
+        name: MyProject_IIS
+        organization: Default
+        job_args:
+          extra_vars:
+             message: from eda
+             sleep: 1
