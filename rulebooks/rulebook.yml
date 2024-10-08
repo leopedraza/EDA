@@ -9,10 +9,10 @@
           port: 6000
 
   rules:
-      - name: Launch playbook on start command
-        condition: event.payload.command == 'start'
+      - name: Launch playbook on commit
+        condition: event.payload.action == 'created'
         action:
-           run_playbook:
-               name: playbook.yml
+           run_job_template:
+               name: MyProject_IIS
                extra_vars:
                    eventSource: "{{ eventSource }}"  
